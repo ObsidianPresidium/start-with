@@ -12,10 +12,10 @@ def print_help():
     print("-h        : print this help message and exit (also --help)")
     print("-d        : do a dry run and print the command this would've executed")
     print("-p prompt : message to display in the option picker")
-    print("-i command: REQUIRED, command to run. Include a %s in this command to replace running this with an argument which is the picked option, with the option being run as %s.")
+    print("-i command: REQUIRED, command to run. Include a %s in this command to replace running this with an argument which is the picked option, with the option being run as %s. %q may be used to substitute a quotation mark")
     print("-w args   : REQUIRED, potential arguments to run the command with")
     print("-t text   : user-friendly text which accompanies a -w option. This will be written in the picker instead of the argument(s)")
-    exit(0)
+    sys.exit(0)
 
 
 def parseargs():
@@ -74,6 +74,8 @@ picked_arg = pick(parsed_args.pretty_list, arg_pretty_prompt if not arg_pretty_p
 if "%s" in parsed_args.initial_path:
     parsed_args.initial_path = parsed_args.initial_path.replace("%s", parsed_args.with_text_dict[picked_arg[0]])
     parsed_args.set_options = False
+
+parsed_args.initial_path = parsed_args.initial_path.replace("%q", "\"")
 
 if parsed_args.dry_run:
     command = print
